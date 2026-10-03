@@ -1,0 +1,49 @@
+name: pharma_reserve
+description: B2B pharmacy ordering platform — pharmacies order stock from warehouses.
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Backend
+  supabase_flutter: ^2.5.6
+
+  # State management / architecture
+  flutter_bloc: ^8.1.6
+  bloc: ^8.1.4
+  equatable: ^2.0.5
+  get_it: ^7.7.0
+  dartz: ^0.10.1
+
+  # Routing
+  go_router: ^14.2.0
+
+  # i18n (loads assets/translations/{en,ar}.json — same approach as reference app)
+  easy_localization: ^3.0.7
+  intl: ^0.19.0
+
+  # UI / assets
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.0.10+1
+  cached_network_image: ^3.3.1
+  flutter_secure_storage: ^9.2.2
+  logger: ^2.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/translations/
+    - assets/images/
