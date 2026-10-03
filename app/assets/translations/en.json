@@ -1,5 +1,6 @@
 {
-  "app_name": "PharmaReserve",
+  "app_name": "MedStock",
+  "brand_tagline": "Pharmacy supply, simplified",
   "email": "Email",
   "password": "Password",
   "invalid_email": "Enter a valid email",

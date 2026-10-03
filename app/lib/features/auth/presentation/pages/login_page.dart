@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/widgets/brand_logo.dart';
 import '../cubit/auth_cubit.dart';
 
 class LoginPage extends StatefulWidget {
@@ -55,11 +56,11 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const Icon(Icons.local_pharmacy, size: 64),
-                        const SizedBox(height: 12),
-                        Text('app_name'.tr(),
+                        const Center(child: BrandLogo(markSize: 72)),
+                        const SizedBox(height: 8),
+                        Text('brand_tagline'.tr(),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineSmall),
+                            style: Theme.of(context).textTheme.bodySmall),
                         const SizedBox(height: 32),
                         TextFormField(
                           controller: _email,

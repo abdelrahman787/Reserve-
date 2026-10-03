@@ -45,7 +45,7 @@ class PharmaReserveApp extends StatelessWidget {
     return BlocProvider(
       create: (_) => AuthCubit(sl<AuthRepository>()),
       child: MaterialApp.router(
-        title: 'PharmaReserve',
+        title: 'MedStock',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light(),
         darkTheme: AppTheme.dark(),
