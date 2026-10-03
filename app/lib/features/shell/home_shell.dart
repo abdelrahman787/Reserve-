@@ -8,6 +8,8 @@ import '../catalog/data/catalog_repository.dart';
 import '../catalog/presentation/cubit/catalog_cubit.dart';
 import '../catalog/presentation/pages/catalog_page.dart';
 import '../more/presentation/pages/more_page.dart';
+import '../orders/data/orders_repository.dart';
+import '../orders/presentation/cubit/orders_cubit.dart';
 import '../orders/presentation/pages/orders_page.dart';
 
 class HomeShell extends StatefulWidget {
@@ -28,7 +30,10 @@ class _HomeShellState extends State<HomeShell> {
         child: const CatalogPage(),
       ),
       const CartPage(),
-      const OrdersPage(),
+      BlocProvider(
+        create: (_) => OrdersCubit(sl<OrdersRepository>())..load(),
+        child: const OrdersPage(),
+      ),
       const MorePage(),
     ];
 

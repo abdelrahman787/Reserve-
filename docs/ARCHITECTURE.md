@@ -66,13 +66,18 @@ Schema lives in `backend/supabase/migrations/`. Highlights:
 ## Status / roadmap
 
 - [x] Repo + architecture + extracted reference data
-- [ ] DB schema + RLS (in progress)
-- [ ] Flutter app scaffold (core: config, DI, router, theme, Supabase)
-- [ ] Auth feature (register pharmacy / login)
-- [ ] Catalog feature (list, search, filter, details)
-- [ ] Cart + checkout + orders
-- [ ] Admin dashboard (web)
-- [ ] Seed data + end-to-end run instructions
+- [x] DB schema + RLS (`0001_init.sql`)
+- [x] Flutter app scaffold (core: config, DI, router, theme, Supabase)
+- [x] Auth feature (register pharmacy / login)
+- [x] Catalog feature (list, search, details)
+- [x] Cart + checkout (`checkout` RPC, `0002_checkout.sql`) + orders (list + details + status)
+- [x] Admin dashboard (web): manage products/price/stock + review orders + update status
+- [x] Seed data + run instructions (`app/README.md`)
+- [x] Validated: `flutter analyze` clean + `flutter build web` succeeds
+- [ ] Next: wallet UI, promos management, order realtime updates, tests
+
+Verified with Flutter 3.47 / Dart 3.13 in this environment:
+`flutter analyze` → *No issues found!*; `flutter build web` → *Built build/web*.
 
 ## Notes on the reference app
 

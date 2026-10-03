@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/session/session_service.dart';
+import '../../../orders/data/orders_repository.dart';
 import '../../data/cart_repository.dart';
 
 class CartPage extends StatefulWidget {
@@ -14,11 +15,19 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   late Future<List<CartLine>> _future;
+  final _promo = TextEditingController();
+  bool _placing = false;
 
   @override
   void initState() {
     super.initState();
     _future = _load();
+  }
+
+  @override
+  void dispose() {
+    _promo.dispose();
+    super.dispose();
   }
 
   Future<List<CartLine>> _load() async {
@@ -33,6 +42,25 @@ class _CartPageState extends State<CartPage> {
   Future<void> _remove(String id) async {
     await sl<CartRepository>().removeItem(id);
     _refresh();
+  }
+
+  Future<void> _checkout() async {
+    setState(() => _placing = true);
+    final res = await sl<OrdersRepository>().checkout(
+      promoCode: _promo.text.trim().isEmpty ? null : _promo.text.trim(),
+    );
+    if (!mounted) return;
+    setState(() => _placing = false);
+    res.fold(
+      (f) => ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(f.message))),
+      (ids) {
+        _promo.clear();
+        _refresh();
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('order_success'.tr())));
+      },
+    );
   }
 
   @override
@@ -84,6 +112,14 @@ class _CartPageState extends State<CartPage> {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
+                      TextField(
+                        controller: _promo,
+                        decoration: InputDecoration(
+                          labelText: 'promo_code'.tr(),
+                          prefixIcon: const Icon(Icons.local_offer_outlined),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -97,13 +133,15 @@ class _CartPageState extends State<CartPage> {
                       ),
                       const SizedBox(height: 12),
                       FilledButton(
-                        onPressed: () {
-                          // TODO: create order (orders feature — next iteration).
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('checkout_todo'.tr())),
-                          );
-                        },
-                        child: Text('checkout'.tr()),
+                        onPressed: _placing ? null : _checkout,
+                        child: _placing
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2),
+                              )
+                            : Text('checkout'.tr()),
                       ),
                     ],
                   ),

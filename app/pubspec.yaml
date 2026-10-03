@@ -28,7 +28,7 @@ dependencies:
 
   # i18n (loads assets/translations/{en,ar}.json — same approach as reference app)
   easy_localization: ^3.0.7
-  intl: ^0.19.0
+  intl: ^0.20.2
 
   # UI / assets
   cupertino_icons: ^1.0.8

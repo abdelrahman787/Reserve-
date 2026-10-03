@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/session/session_service.dart';
@@ -16,6 +17,22 @@ class MorePage extends StatelessWidget {
       appBar: AppBar(title: Text('more'.tr())),
       body: ListView(
         children: [
+          FutureBuilder<bool>(
+            future: sl<SessionService>().isAdminOrVendor(),
+            builder: (context, snap) {
+              if (snap.data != true) return const SizedBox.shrink();
+              return Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.dashboard_outlined),
+                    title: Text('admin_dashboard'.tr()),
+                    onTap: () => context.push('/admin'),
+                  ),
+                  const Divider(),
+                ],
+              );
+            },
+          ),
           ListTile(
             leading: const Icon(Icons.language),
             title: Text('language'.tr()),

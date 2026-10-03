@@ -17,7 +17,8 @@ Future<void> main() async {
   if (Env.isConfigured) {
     await Supabase.initialize(
       url: Env.supabaseUrl,
-      anonKey: Env.supabaseAnonKey,
+      // The Supabase dashboard "anon public" key is the publishable key.
+      publishableKey: Env.supabaseAnonKey,
     );
     setupLocator();
   }
@@ -66,13 +67,13 @@ class _NotConfiguredApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
-      home: Scaffold(
+      home: const Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Icon(Icons.settings, size: 48),
                 SizedBox(height: 16),
                 Text(
