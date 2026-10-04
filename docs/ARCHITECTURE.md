@@ -72,9 +72,13 @@ Schema lives in `backend/supabase/migrations/`. Highlights:
 - [x] Catalog feature (list, search, details)
 - [x] Cart + checkout (`checkout` RPC, `0002_checkout.sql`) + orders (list + details + status)
 - [x] Admin dashboard (web): manage products/price/stock + review orders + update status
+- [x] Wallet UI (balance + transactions; auto-created per pharmacy, `0004`)
+- [x] Promos management (admin: create / activate, `0004` vendor policy)
+- [x] Realtime order updates (pharmacy order list live-refreshes on changes)
+- [x] Brand identity (logo, palette, theme, app icon — see `BRAND.md`)
 - [x] Seed data + run instructions (`app/README.md`)
-- [x] Validated: `flutter analyze` clean + `flutter build web` succeeds
-- [ ] Next: wallet UI, promos management, order realtime updates, tests
+- [x] Validated: `flutter analyze` clean + `flutter test` passing + `flutter build web` succeeds
+- [ ] Next: wallet top-up / order-paid debits, order realtime on admin side, payment gateway, more tests
 
 Verified with Flutter 3.47 / Dart 3.13 in this environment:
 `flutter analyze` → *No issues found!*; `flutter build web` → *Built build/web*.

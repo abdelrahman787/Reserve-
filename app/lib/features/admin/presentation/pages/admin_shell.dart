@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'admin_orders_page.dart';
 import 'admin_products_page.dart';
+import 'admin_promos_page.dart';
 
 class AdminShell extends StatelessWidget {
   const AdminShell({super.key});
@@ -10,19 +11,21 @@ class AdminShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: Text('admin_dashboard'.tr()),
           bottom: TabBar(
+            isScrollable: true,
             tabs: [
               Tab(text: 'admin_products'.tr()),
               Tab(text: 'admin_orders'.tr()),
+              Tab(text: 'admin_promos'.tr()),
             ],
           ),
         ),
         body: const TabBarView(
-          children: [AdminProductsPage(), AdminOrdersPage()],
+          children: [AdminProductsPage(), AdminOrdersPage(), AdminPromosPage()],
         ),
       ),
     );

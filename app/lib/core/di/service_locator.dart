@@ -6,6 +6,7 @@ import '../../features/auth/data/auth_repository.dart';
 import '../../features/cart/data/cart_repository.dart';
 import '../../features/catalog/data/catalog_repository.dart';
 import '../../features/orders/data/orders_repository.dart';
+import '../../features/wallet/data/wallet_repository.dart';
 import '../session/session_service.dart';
 
 final GetIt sl = GetIt.instance;
@@ -22,5 +23,6 @@ void setupLocator() {
     sl.registerLazySingleton(() => CartRepository(client));
     sl.registerLazySingleton(() => OrdersRepository(client));
     sl.registerLazySingleton(() => AdminRepository(client));
+    sl.registerLazySingleton(() => WalletRepository(client));
   }
 }

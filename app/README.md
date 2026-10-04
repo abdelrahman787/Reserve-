@@ -13,8 +13,13 @@ stock). Flutter for Android, iOS, and Web from one codebase.
 1. Create a project at https://supabase.com.
 2. In the SQL editor, run, in order:
    - `../backend/supabase/migrations/0001_init.sql`
+   - `../backend/supabase/migrations/0002_checkout.sql`
+   - `../backend/supabase/migrations/0003_admin_policies.sql`
+   - `../backend/supabase/migrations/0004_wallet_promos.sql`
    - `../backend/supabase/seed/seed.sql` (optional sample data)
-3. From **Project Settings → API**, copy the **Project URL** and the
+3. (Optional, for live order updates) **Database → Replication** → enable
+   Realtime for the `orders` table.
+4. From **Project Settings → API**, copy the **Project URL** and the
    **anon public** key.
 
 ## 2. Generate platform folders

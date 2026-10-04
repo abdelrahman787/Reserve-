@@ -71,5 +71,18 @@
   "admin_discount_pct": "نسبة الخصم %",
   "admin_available": "متاح",
   "admin_trade_name": "الاسم التجاري",
-  "admin_update_status": "تحديث الحالة"
+  "admin_update_status": "تحديث الحالة",
+  "wallet": "المحفظة",
+  "wallet_balance": "الرصيد المتاح",
+  "wallet_transactions": "المعاملات",
+  "wallet_no_transactions": "لا توجد معاملات بعد",
+  "credit": "إيداع",
+  "debit": "خصم",
+  "admin_promos": "العروض",
+  "admin_add_promo": "إضافة عرض",
+  "admin_no_promos": "لا توجد عروض بعد",
+  "admin_min_order": "الحد الأدنى للطلب",
+  "admin_percent": "نسبة",
+  "admin_fixed": "قيمة ثابتة",
+  "admin_value": "القيمة"
 }

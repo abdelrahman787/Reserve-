@@ -71,5 +71,18 @@
   "admin_discount_pct": "Discount %",
   "admin_available": "Available",
   "admin_trade_name": "Trade name",
-  "admin_update_status": "Update status"
+  "admin_update_status": "Update status",
+  "wallet": "Wallet",
+  "wallet_balance": "Available balance",
+  "wallet_transactions": "Transactions",
+  "wallet_no_transactions": "No transactions yet",
+  "credit": "Credit",
+  "debit": "Debit",
+  "admin_promos": "Promos",
+  "admin_add_promo": "Add promo",
+  "admin_no_promos": "No promos yet",
+  "admin_min_order": "Min order",
+  "admin_percent": "Percent",
+  "admin_fixed": "Fixed",
+  "admin_value": "Value"
 }

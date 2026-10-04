@@ -7,6 +7,7 @@ import '../../features/admin/presentation/pages/admin_shell.dart';
 import '../../features/catalog/presentation/pages/product_details_page.dart';
 import '../../features/orders/presentation/pages/order_details_page.dart';
 import '../../features/shell/home_shell.dart';
+import '../../features/wallet/presentation/pages/wallet_page.dart';
 import 'refresh_stream.dart';
 
 class AppRouter {
@@ -40,6 +41,7 @@ class AppRouter {
             OrderDetailsPage(orderId: state.pathParameters['id']!),
       ),
       GoRoute(path: '/admin', builder: (_, __) => const AdminShell()),
+      GoRoute(path: '/wallet', builder: (_, __) => const WalletPage()),
     ],
   );
 }

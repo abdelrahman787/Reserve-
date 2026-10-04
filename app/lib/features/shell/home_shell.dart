@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/di/service_locator.dart';
 import '../cart/presentation/pages/cart_page.dart';
@@ -31,7 +32,8 @@ class _HomeShellState extends State<HomeShell> {
       ),
       const CartPage(),
       BlocProvider(
-        create: (_) => OrdersCubit(sl<OrdersRepository>())..load(),
+        create: (_) =>
+            OrdersCubit(sl<OrdersRepository>(), sl<SupabaseClient>())..load(),
         child: const OrdersPage(),
       ),
       const MorePage(),

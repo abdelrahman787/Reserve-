@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/error/failures.dart';
+import 'models/promo_row.dart';
 import 'models/vendor_product_row.dart';
 
 class AdminRepository {
@@ -76,6 +77,62 @@ class AdminRepository {
         'price': price,
         'stock_qty': stockQty,
       });
+      return const Right(unit);
+    } on PostgrestException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (_) {
+      return const Left(UnknownFailure());
+    }
+  }
+
+  // --- Promos ---------------------------------------------------------------
+
+  Future<Either<Failure, List<PromoRow>>> fetchPromos(String vendorId) async {
+    try {
+      final rows = await _client
+          .from('promos')
+          .select()
+          .eq('vendor_id', vendorId)
+          .order('created_at', ascending: false);
+      final list = (rows as List)
+          .map((e) => PromoRow.fromMap(e as Map<String, dynamic>))
+          .toList();
+      return Right(list);
+    } on PostgrestException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (_) {
+      return const Left(UnknownFailure());
+    }
+  }
+
+  Future<Either<Failure, Unit>> createPromo({
+    required String vendorId,
+    required String code,
+    required String dType,
+    required double dValue,
+    double minOrder = 0,
+    String? description,
+  }) async {
+    try {
+      await _client.from('promos').insert({
+        'vendor_id': vendorId,
+        'code': code,
+        'd_type': dType,
+        'd_value': dValue,
+        'min_order': minOrder,
+        'description': description,
+      });
+      return const Right(unit);
+    } on PostgrestException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (_) {
+      return const Left(UnknownFailure());
+    }
+  }
+
+  Future<Either<Failure, Unit>> setPromoActive(String id, bool active) async {
+    try {
+      await _client.from('promos').update({'is_active': active}).eq('id', id);
       return const Right(unit);
     } on PostgrestException catch (e) {
       return Left(ServerFailure(e.message));
