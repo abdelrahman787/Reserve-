@@ -76,9 +76,13 @@ Schema lives in `backend/supabase/migrations/`. Highlights:
 - [x] Promos management (admin: create / activate, `0004` vendor policy)
 - [x] Realtime order updates (pharmacy order list live-refreshes on changes)
 - [x] Brand identity (logo, palette, theme, app icon — see `BRAND.md`)
+- [x] Realtime on the admin side too (incoming-orders list live-refreshes)
+- [x] Push notifications (FCM): client integration + `device_tokens` (`0005`)
+      + `send-notification` Edge Function — see `NOTIFICATIONS.md`
+- [x] Unit tests (pricing / parsing) + CI (GitHub Actions: analyze + test)
 - [x] Seed data + run instructions (`app/README.md`)
 - [x] Validated: `flutter analyze` clean + `flutter test` passing + `flutter build web` succeeds
-- [ ] Next: wallet top-up / order-paid debits, order realtime on admin side, payment gateway, more tests
+- [ ] Next: wallet top-up / order-paid debits, payment gateway, order-status → push trigger
 
 Verified with Flutter 3.47 / Dart 3.13 in this environment:
 `flutter analyze` → *No issues found!*; `flutter build web` → *Built build/web*.

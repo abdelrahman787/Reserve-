@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/di/service_locator.dart';
+import '../../core/services/notification_service.dart';
 import '../cart/presentation/pages/cart_page.dart';
 import '../catalog/data/catalog_repository.dart';
 import '../catalog/presentation/cubit/catalog_cubit.dart';
@@ -22,6 +23,13 @@ class HomeShell extends StatefulWidget {
 
 class _HomeShellState extends State<HomeShell> {
   int _index = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Register this device for push notifications now that the user is signed in.
+    sl<NotificationService>().registerToken();
+  }
 
   @override
   Widget build(BuildContext context) {

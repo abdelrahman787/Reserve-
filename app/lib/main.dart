@@ -7,6 +7,7 @@ import 'core/config/env.dart';
 import 'core/di/service_locator.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'core/services/notification_service.dart';
 import 'features/auth/data/auth_repository.dart';
 import 'features/auth/presentation/cubit/auth_cubit.dart';
 
@@ -21,6 +22,8 @@ Future<void> main() async {
       publishableKey: Env.supabaseAnonKey,
     );
     setupLocator();
+    // Guarded: no-op if Firebase isn't configured for this build.
+    await sl<NotificationService>().init();
   }
 
   runApp(

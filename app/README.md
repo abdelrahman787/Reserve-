@@ -16,6 +16,7 @@ stock). Flutter for Android, iOS, and Web from one codebase.
    - `../backend/supabase/migrations/0002_checkout.sql`
    - `../backend/supabase/migrations/0003_admin_policies.sql`
    - `../backend/supabase/migrations/0004_wallet_promos.sql`
+   - `../backend/supabase/migrations/0005_device_tokens.sql`
    - `../backend/supabase/seed/seed.sql` (optional sample data)
 3. (Optional, for live order updates) **Database → Replication** → enable
    Realtime for the `orders` table.
