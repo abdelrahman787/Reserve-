@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/di/service_locator.dart';
 import '../../../orders/data/models/order.dart';
@@ -24,11 +25,34 @@ class AdminOrdersPage extends StatefulWidget {
 
 class _AdminOrdersPageState extends State<AdminOrdersPage> {
   late Future<List<PharmaOrder>> _future;
+  RealtimeChannel? _channel;
 
   @override
   void initState() {
     super.initState();
     _future = _load();
+    _subscribeRealtime();
+  }
+
+  @override
+  void dispose() {
+    final channel = _channel;
+    if (channel != null) sl<SupabaseClient>().removeChannel(channel);
+    super.dispose();
+  }
+
+  void _subscribeRealtime() {
+    _channel = sl<SupabaseClient>()
+        .channel('public:orders:admin')
+        .onPostgresChanges(
+          event: PostgresChangeEvent.all,
+          schema: 'public',
+          table: 'orders',
+          callback: (_) {
+            if (mounted) _refresh();
+          },
+        )
+        .subscribe();
   }
 
   Future<List<PharmaOrder>> _load() async {
