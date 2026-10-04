@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../features/admin/data/admin_repository.dart';
 import '../../features/auth/data/auth_repository.dart';
 import '../../features/cart/data/cart_repository.dart';
+import '../../features/cart/presentation/cubit/cart_cubit.dart';
 import '../../features/catalog/data/catalog_repository.dart';
 import '../../features/orders/data/orders_repository.dart';
 import '../../features/wallet/data/wallet_repository.dart';
@@ -26,5 +27,6 @@ void setupLocator() {
     sl.registerLazySingleton(() => AdminRepository(client));
     sl.registerLazySingleton(() => WalletRepository(client));
     sl.registerLazySingleton(() => NotificationService(client));
+    sl.registerLazySingleton(() => CartCubit(sl<CartRepository>(), sl<SessionService>()));
   }
 }

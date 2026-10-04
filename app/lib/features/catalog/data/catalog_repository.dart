@@ -2,11 +2,29 @@ import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/error/failures.dart';
+import 'models/category.dart';
 import 'models/product.dart';
 
 class CatalogRepository {
   CatalogRepository(this._client);
   final SupabaseClient _client;
+
+  Future<Either<Failure, List<Category>>> fetchCategories() async {
+    try {
+      final rows = await _client
+          .from('categories')
+          .select()
+          .order('sort_order', ascending: true);
+      final list = (rows as List)
+          .map((e) => Category.fromMap(e as Map<String, dynamic>))
+          .toList();
+      return Right(list);
+    } on PostgrestException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (_) {
+      return const Left(UnknownFailure());
+    }
+  }
 
   static const _select =
       '*, vendor_products(id, vendor_id, price, discount_percent, stock_qty, is_available)';

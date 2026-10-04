@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/di/service_locator.dart';
 import '../../core/services/notification_service.dart';
+import '../cart/presentation/cubit/cart_cubit.dart';
 import '../cart/presentation/pages/cart_page.dart';
 import '../catalog/data/catalog_repository.dart';
 import '../catalog/presentation/cubit/catalog_cubit.dart';
@@ -27,8 +28,8 @@ class _HomeShellState extends State<HomeShell> {
   @override
   void initState() {
     super.initState();
-    // Register this device for push notifications now that the user is signed in.
     sl<NotificationService>().registerToken();
+    sl<CartCubit>().load();
   }
 
   @override
@@ -47,29 +48,49 @@ class _HomeShellState extends State<HomeShell> {
       const MorePage(),
     ];
 
-    return Scaffold(
-      body: IndexedStack(index: _index, children: pages),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (i) => setState(() => _index = i),
-        destinations: [
-          NavigationDestination(
-              icon: const Icon(Icons.home_outlined),
-              selectedIcon: const Icon(Icons.home),
-              label: 'home'.tr()),
-          NavigationDestination(
-              icon: const Icon(Icons.shopping_cart_outlined),
-              selectedIcon: const Icon(Icons.shopping_cart),
-              label: 'cart'.tr()),
-          NavigationDestination(
-              icon: const Icon(Icons.receipt_long_outlined),
-              selectedIcon: const Icon(Icons.receipt_long),
-              label: 'orders'.tr()),
-          NavigationDestination(
-              icon: const Icon(Icons.more_horiz),
-              label: 'more'.tr()),
-        ],
+    return BlocProvider.value(
+      value: sl<CartCubit>(),
+      child: Scaffold(
+        body: IndexedStack(index: _index, children: pages),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: _index,
+          onDestinationSelected: (i) => setState(() => _index = i),
+          destinations: [
+            NavigationDestination(
+                icon: const Icon(Icons.home_outlined),
+                selectedIcon: const Icon(Icons.home),
+                label: 'home'.tr()),
+            NavigationDestination(
+              icon: const _CartIcon(filled: false),
+              selectedIcon: const _CartIcon(filled: true),
+              label: 'cart'.tr(),
+            ),
+            NavigationDestination(
+                icon: const Icon(Icons.receipt_long_outlined),
+                selectedIcon: const Icon(Icons.receipt_long),
+                label: 'orders'.tr()),
+            NavigationDestination(
+                icon: const Icon(Icons.more_horiz), label: 'more'.tr()),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class _CartIcon extends StatelessWidget {
+  const _CartIcon({required this.filled});
+  final bool filled;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CartCubit, CartState>(
+      builder: (context, state) {
+        final icon =
+            Icon(filled ? Icons.shopping_cart : Icons.shopping_cart_outlined);
+        if (state.count == 0) return icon;
+        return Badge(label: Text('${state.count}'), child: icon);
+      },
     );
   }
 }

@@ -105,4 +105,23 @@ class CartRepository {
       return const Left(UnknownFailure());
     }
   }
+
+  /// Sets a line's quantity; removes the line when quantity drops to zero.
+  Future<Either<Failure, Unit>> updateQuantity(
+      String cartItemId, int quantity) async {
+    try {
+      if (quantity <= 0) {
+        await _client.from('cart_items').delete().eq('id', cartItemId);
+      } else {
+        await _client
+            .from('cart_items')
+            .update({'quantity': quantity}).eq('id', cartItemId);
+      }
+      return const Right(unit);
+    } on PostgrestException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (_) {
+      return const Left(UnknownFailure());
+    }
+  }
 }

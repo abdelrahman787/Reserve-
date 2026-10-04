@@ -84,5 +84,18 @@
   "admin_min_order": "الحد الأدنى للطلب",
   "admin_percent": "نسبة",
   "admin_fixed": "قيمة ثابتة",
-  "admin_value": "القيمة"
+  "admin_value": "القيمة",
+  "all": "الكل",
+  "filter": "تصفية",
+  "filter_price": "التصفية حسب السعر",
+  "price_from": "من",
+  "price_to": "إلى",
+  "apply": "تطبيق",
+  "clear": "مسح",
+  "cart_empty_hint": "تصفّح الكتالوج وأضف المنتجات إلى سلتك",
+  "no_results_hint": "جرّب كلمة بحث مختلفة أو امسح الفلاتر",
+  "offers_count": "{} عروض من موزّعين",
+  "requires_rx": "بروشتة",
+  "forgot_password": "نسيت كلمة المرور؟",
+  "reset_sent": "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك"
 }

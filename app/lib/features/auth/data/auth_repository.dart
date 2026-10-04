@@ -79,5 +79,16 @@ class AuthRepository {
     }
   }
 
+  Future<Either<Failure, Unit>> resetPassword(String email) async {
+    try {
+      await _client.auth.resetPasswordForEmail(email);
+      return const Right(unit);
+    } on AuthException catch (e) {
+      return Left(AuthFailure(e.message));
+    } catch (_) {
+      return const Left(UnknownFailure());
+    }
+  }
+
   Future<void> signOut() => _client.auth.signOut();
 }

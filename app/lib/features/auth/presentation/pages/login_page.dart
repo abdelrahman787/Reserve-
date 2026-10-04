@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/di/service_locator.dart';
 import '../../../../core/widgets/brand_logo.dart';
+import '../../data/auth_repository.dart';
 import '../cubit/auth_cubit.dart';
 
 class LoginPage extends StatefulWidget {
@@ -29,6 +31,23 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState?.validate() ?? false) {
       context.read<AuthCubit>().login(_email.text.trim(), _password.text);
     }
+  }
+
+  Future<void> _forgotPassword() async {
+    final email = _email.text.trim();
+    if (!email.contains('@')) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('invalid_email'.tr())));
+      return;
+    }
+    final res = await sl<AuthRepository>().resetPassword(email);
+    if (!mounted) return;
+    res.fold(
+      (f) => ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(f.message))),
+      (_) => ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('reset_sent'.tr()))),
+    );
   }
 
   @override
@@ -89,6 +108,10 @@ class _LoginPageState extends State<LoginPage> {
                               : Text('login'.tr()),
                         ),
                         const SizedBox(height: 12),
+                        TextButton(
+                          onPressed: loading ? null : _forgotPassword,
+                          child: Text('forgot_password'.tr()),
+                        ),
                         TextButton(
                           onPressed: () => context.push('/register'),
                           child: Text('create_account'.tr()),

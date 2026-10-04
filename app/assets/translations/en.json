@@ -84,5 +84,18 @@
   "admin_min_order": "Min order",
   "admin_percent": "Percent",
   "admin_fixed": "Fixed",
-  "admin_value": "Value"
+  "admin_value": "Value",
+  "all": "All",
+  "filter": "Filter",
+  "filter_price": "Filter by price",
+  "price_from": "From",
+  "price_to": "To",
+  "apply": "Apply",
+  "clear": "Clear",
+  "cart_empty_hint": "Browse the catalog and add products to your cart",
+  "no_results_hint": "Try a different search term or clear the filters",
+  "offers_count": "{} offers from distributors",
+  "requires_rx": "Rx",
+  "forgot_password": "Forgot password?",
+  "reset_sent": "A password reset link has been sent to your email"
 }

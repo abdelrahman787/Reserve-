@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/widgets/app_loader.dart';
+import '../../../../core/widgets/empty_state.dart';
 import '../cubit/orders_cubit.dart';
 import '../widgets/order_status_chip.dart';
 
@@ -19,23 +21,21 @@ class OrdersPage extends StatelessWidget {
           switch (state.status) {
             case OrdersStatus.initial:
             case OrdersStatus.loading:
-              return const Center(child: CircularProgressIndicator());
+              return const AppLoader();
             case OrdersStatus.error:
-              return Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(state.message ?? 'error'.tr()),
-                    TextButton(
-                      onPressed: () => context.read<OrdersCubit>().load(),
-                      child: Text('retry'.tr()),
-                    ),
-                  ],
-                ),
+              return EmptyState(
+                icon: Icons.wifi_off_rounded,
+                title: state.message ?? 'error'.tr(),
+                actionLabel: 'retry'.tr(),
+                onAction: () => context.read<OrdersCubit>().load(),
               );
             case OrdersStatus.loaded:
               if (state.orders.isEmpty) {
-                return Center(child: Text('no_orders'.tr()));
+                return EmptyState(
+                  icon: Icons.receipt_long_outlined,
+                  title: 'no_orders'.tr(),
+                  subtitle: 'orders_coming_soon'.tr(),
+                );
               }
               return RefreshIndicator(
                 onRefresh: () => context.read<OrdersCubit>().load(),
