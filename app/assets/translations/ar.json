@@ -100,5 +100,7 @@
   "reset_sent": "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك",
   "upload_image": "رفع صورة",
   "pick_image": "اختيار صورة",
-  "image_uploaded": "تم رفع الصورة"
+  "image_uploaded": "تم رفع الصورة",
+  "pay_from_wallet": "الدفع من المحفظة",
+  "paid_success": "تم دفع الطلب بنجاح"
 }

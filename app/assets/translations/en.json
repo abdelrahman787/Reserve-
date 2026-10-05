@@ -100,5 +100,7 @@
   "reset_sent": "A password reset link has been sent to your email",
   "upload_image": "Upload image",
   "pick_image": "Pick image",
-  "image_uploaded": "Image uploaded"
+  "image_uploaded": "Image uploaded",
+  "pay_from_wallet": "Pay from wallet",
+  "paid_success": "Order paid successfully"
 }

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/di/service_locator.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../data/models/order.dart';
 import '../../data/orders_repository.dart';
 import '../widgets/order_status_chip.dart';
@@ -15,10 +16,31 @@ class OrderDetailsPage extends StatefulWidget {
 }
 
 class _OrderDetailsPageState extends State<OrderDetailsPage> {
-  late final Future<PharmaOrder?> _future =
-      sl<OrdersRepository>().fetchOrder(widget.orderId).then(
-            (res) => res.fold((_) => null, (o) => o),
-          );
+  late Future<PharmaOrder?> _future = _load();
+  bool _paying = false;
+
+  Future<PharmaOrder?> _load() => sl<OrdersRepository>()
+      .fetchOrder(widget.orderId)
+      .then((res) => res.fold((_) => null, (o) => o));
+
+  Future<void> _payFromWallet() async {
+    setState(() => _paying = true);
+    final res = await sl<OrdersRepository>().payFromWallet(widget.orderId);
+    if (!mounted) return;
+    setState(() {
+      _paying = false;
+      if (res.isRight()) _future = _load();
+    });
+    res.fold(
+      (f) => ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(f.message))),
+      (_) => ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            backgroundColor: AppColors.accent,
+            content: Text('paid_success'.tr())),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +104,19 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                 Text('order_note'.tr(),
                     style: Theme.of(context).textTheme.labelMedium),
                 Text(o.note!),
+              ],
+              if (o.status == 'pending') ...[
+                const SizedBox(height: 24),
+                FilledButton.icon(
+                  onPressed: _paying ? null : _payFromWallet,
+                  icon: _paying
+                      ? const SizedBox(
+                          height: 18,
+                          width: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2))
+                      : const Icon(Icons.account_balance_wallet_outlined),
+                  label: Text('pay_from_wallet'.tr()),
+                ),
               ],
             ],
           );

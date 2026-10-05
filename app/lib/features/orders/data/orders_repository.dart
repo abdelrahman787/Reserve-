@@ -57,6 +57,19 @@ class OrdersRepository {
     }
   }
 
+  /// Pays a pending order from the pharmacy's wallet; returns the new balance.
+  Future<Either<Failure, double>> payFromWallet(String orderId) async {
+    try {
+      final res =
+          await _client.rpc('pay_order_from_wallet', params: {'p_order_id': orderId});
+      return Right((res as num).toDouble());
+    } on PostgrestException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (_) {
+      return const Left(UnknownFailure());
+    }
+  }
+
   /// Calls the `checkout` RPC; returns the created order ids.
   Future<Either<Failure, List<String>>> checkout({
     String? note,
