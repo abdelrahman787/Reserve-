@@ -155,7 +155,8 @@ RLS is enabled on every table. Summary:
 
 Migrations: `0001` schema+RLS, `0002` checkout RPC, `0003` vendor-can-add-
 products, `0004` wallet auto-create + vendor promos, `0005` device_tokens,
-`0006` pharmacies policies.
+`0006` pharmacies policies, `0007` product-image Storage bucket, `0008` wallet
+pay / credit RPCs.
 
 ---
 
@@ -233,20 +234,23 @@ Full details, including the admin SQL snippet, are in
 
 ## 12. Status, limitations & roadmap
 
-**Done:** auth (+ reset), catalog (search/filter/categories), cart (+ qty),
-checkout + orders (+ status + realtime, both sides), wallet (view), warehouse
-dashboard (products/orders/promos), brand identity, push-notification
-integration, i18n (ar/en), tests + CI.
+**Done:** auth (+ reset), catalog (search / category chips / price filter /
+**pagination**), cart (+ quantity steppers + badge), checkout + orders
+(+ status + realtime both sides), **product images** (upload to Storage +
+display), **pay-from-wallet** (+ admin wallet credit), wallet (balance +
+transactions), **account settings**, warehouse dashboard
+(products / orders / promos), **order-status → push** (best-effort), brand
+identity, FCM integration, i18n (ar/en, 100+ keys), tests (13) + CI.
 
-**Known limitations (out of MVP scope):**
-- No real **payment gateway**; the wallet is display-only and checkout does not
-  charge. No wallet top-up / order-paid debits yet.
-- No account/profile editing; no catalog pagination/infinite scroll.
-- Product **images**: schema supports `image_url`, but no in-app upload yet
-  (recommended next step: admin image upload to Supabase Storage).
-- FCM sending requires the owner's Firebase project.
-- Cairo brand font not bundled (see BRAND.md).
+**Known limitations:**
+- No **card payment gateway** — payment is wallet-based (card checkout needs a
+  provider such as Paymob/Stripe). Wallet is funded by the admin `credit_wallet`
+  RPC (or a future top-up flow).
+- FCM **sending** requires the owner's own Firebase project (client + function
+  are ready — see `NOTIFICATIONS.md`).
+- Product **catalog data** (drug names/prices) must come from the owner's
+  backend export or API; the app ships category data + an import path.
+- Cairo brand font not bundled (see `BRAND.md`).
 
-**Suggested next steps:** product-image upload (Storage), payment gateway +
-wallet debits, order-status → push trigger, catalog pagination, account
-settings, more tests.
+**Suggested next steps:** card payment gateway, wallet top-up UI, product data
+import, bundling the Cairo font.

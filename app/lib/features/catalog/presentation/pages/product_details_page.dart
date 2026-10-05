@@ -6,6 +6,7 @@ import '../../../../core/di/service_locator.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_loader.dart';
 import '../../../../core/widgets/empty_state.dart';
+import '../../../../core/widgets/qty_stepper.dart';
 import '../../../cart/presentation/cubit/cart_cubit.dart';
 import '../../data/catalog_repository.dart';
 import '../../data/models/product.dart';
@@ -133,10 +134,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               child: Row(
                 children: [
                   if (product.inStock) ...[
-                    _QtyStepper(
+                    QtyStepper(
                       quantity: _qty,
-                      onChanged: (q) =>
-                          setState(() => _qty = q.clamp(1, 999)),
+                      onChanged: (q) => setState(() => _qty = q),
                     ),
                     const SizedBox(width: 12),
                   ],
@@ -195,32 +195,3 @@ class _RxBadge extends StatelessWidget {
   }
 }
 
-class _QtyStepper extends StatelessWidget {
-  const _QtyStepper({required this.quantity, required this.onChanged});
-  final int quantity;
-  final ValueChanged<int> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.border),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.remove, size: 18),
-            onPressed: () => onChanged(quantity - 1),
-          ),
-          Text('$quantity', style: const TextStyle(fontWeight: FontWeight.w700)),
-          IconButton(
-            icon: const Icon(Icons.add, size: 18),
-            onPressed: () => onChanged(quantity + 1),
-          ),
-        ],
-      ),
-    );
-  }
-}

@@ -72,14 +72,14 @@ class CatalogCubit extends Cubit<CatalogState> {
         categoryId: _categoryId,
         limit: _pageSize,
         offset: _offset);
-    res.fold(
-      (_) {},
+    final more = res.fold(
+      (_) => <Product>[],
       (items) {
         _hasMore = items.length == _pageSize;
         _offset += items.length;
+        return _applyPriceFilter(items);
       },
     );
-    final more = res.fold((_) => <Product>[], (i) => _applyPriceFilter(i));
     _loadingMore = false;
     emit(CatalogState.loaded(
       [...state.products, ...more],

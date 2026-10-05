@@ -6,6 +6,7 @@ import '../../../../core/di/service_locator.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_loader.dart';
 import '../../../../core/widgets/empty_state.dart';
+import '../../../../core/widgets/qty_stepper.dart';
 import '../../../orders/data/orders_repository.dart';
 import '../../data/cart_repository.dart';
 import '../cubit/cart_cubit.dart';
@@ -121,8 +122,9 @@ class _CartTile extends StatelessWidget {
                 ],
               ),
             ),
-            _QtyStepper(
+            QtyStepper(
               quantity: line.quantity,
+              min: 0,
               onChanged: (q) => cubit.setQuantity(line.id, q),
             ),
             const SizedBox(width: 8),
@@ -139,41 +141,6 @@ class _CartTile extends StatelessWidget {
       ),
     );
   }
-}
-
-class _QtyStepper extends StatelessWidget {
-  const _QtyStepper({required this.quantity, required this.onChanged});
-  final int quantity;
-  final ValueChanged<int> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.border),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _btn(Icons.remove, () => onChanged(quantity - 1)),
-          SizedBox(
-            width: 28,
-            child: Text('$quantity', textAlign: TextAlign.center),
-          ),
-          _btn(Icons.add, () => onChanged(quantity + 1)),
-        ],
-      ),
-    );
-  }
-
-  Widget _btn(IconData icon, VoidCallback onTap) => InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(6),
-          child: Icon(icon, size: 18, color: AppColors.primary),
-        ),
-      );
 }
 
 class _CheckoutBar extends StatelessWidget {
