@@ -19,6 +19,8 @@ stock). Flutter for Android, iOS, and Web from one codebase.
    - `../backend/supabase/migrations/0005_device_tokens.sql`
    - `../backend/supabase/migrations/0006_pharmacies_policies.sql`
    - `../backend/supabase/seed/seed.sql` (optional sample data)
+   - `../backend/supabase/seed/categories_import.sql` (optional: 63 real drug
+     categories with images, imported from the owner's catalog)
 3. (Optional, for live order updates) **Database → Replication** → enable
    Realtime for the `orders` table.
 4. From **Project Settings → API**, copy the **Project URL** and the
