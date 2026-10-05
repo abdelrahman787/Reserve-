@@ -18,10 +18,23 @@ class CatalogPage extends StatefulWidget {
 
 class _CatalogPageState extends State<CatalogPage> {
   final _search = TextEditingController();
+  final _scroll = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scroll.addListener(() {
+      if (_scroll.position.pixels >=
+          _scroll.position.maxScrollExtent - 320) {
+        context.read<CatalogCubit>().loadMore();
+      }
+    });
+  }
 
   @override
   void dispose() {
     _search.dispose();
+    _scroll.dispose();
     super.dispose();
   }
 
@@ -154,9 +167,24 @@ class _CatalogPageState extends State<CatalogPage> {
                     return RefreshIndicator(
                       onRefresh: () => context.read<CatalogCubit>().load(),
                       child: ListView.builder(
+                        controller: _scroll,
                         padding: const EdgeInsets.symmetric(horizontal: 12),
-                        itemCount: state.products.length,
+                        itemCount: state.products.length +
+                            (state.loadingMore ? 1 : 0),
                         itemBuilder: (_, i) {
+                          if (i >= state.products.length) {
+                            return const Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Center(
+                                child: SizedBox(
+                                  height: 22,
+                                  width: 22,
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 2),
+                                ),
+                              ),
+                            );
+                          }
                           final p = state.products[i];
                           return ProductCard(
                             product: p,

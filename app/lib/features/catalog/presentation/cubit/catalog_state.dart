@@ -9,6 +9,8 @@ class CatalogState extends Equatable {
     this.categories = const [],
     this.selectedCategoryId,
     this.message,
+    this.hasMore = false,
+    this.loadingMore = false,
   });
 
   const CatalogState.initial() : this._(CatalogStatus.initial);
@@ -22,11 +24,15 @@ class CatalogState extends Equatable {
   const CatalogState.loaded(
     List<Product> products,
     List<Category> categories,
-    String? selectedCategoryId,
-  ) : this._(CatalogStatus.loaded,
+    String? selectedCategoryId, {
+    bool hasMore = false,
+    bool loadingMore = false,
+  }) : this._(CatalogStatus.loaded,
             products: products,
             categories: categories,
-            selectedCategoryId: selectedCategoryId);
+            selectedCategoryId: selectedCategoryId,
+            hasMore: hasMore,
+            loadingMore: loadingMore);
 
   const CatalogState.error(
     String message,
@@ -42,8 +48,20 @@ class CatalogState extends Equatable {
   final List<Category> categories;
   final String? selectedCategoryId;
   final String? message;
+  final bool hasMore;
+  final bool loadingMore;
+
+  CatalogState copyWithLoadingMore(bool value) => CatalogState._(
+        status,
+        products: products,
+        categories: categories,
+        selectedCategoryId: selectedCategoryId,
+        message: message,
+        hasMore: hasMore,
+        loadingMore: value,
+      );
 
   @override
   List<Object?> get props =>
-      [status, products, categories, selectedCategoryId, message];
+      [status, products, categories, selectedCategoryId, message, hasMore, loadingMore];
 }
