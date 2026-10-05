@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
+import '../../features/account/presentation/pages/account_settings_page.dart';
 import '../../features/admin/presentation/pages/admin_shell.dart';
 import '../../features/catalog/presentation/pages/product_details_page.dart';
 import '../../features/orders/presentation/pages/order_details_page.dart';
@@ -42,6 +43,8 @@ class AppRouter {
       ),
       GoRoute(path: '/admin', builder: (_, __) => const AdminShell()),
       GoRoute(path: '/wallet', builder: (_, __) => const WalletPage()),
+      GoRoute(
+          path: '/account', builder: (_, __) => const AccountSettingsPage()),
     ],
   );
 }

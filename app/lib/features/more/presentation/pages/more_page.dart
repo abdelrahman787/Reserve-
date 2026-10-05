@@ -34,6 +34,12 @@ class MorePage extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.person_outline),
+            title: Text('account_settings'.tr()),
+            onTap: () => context.push('/account'),
+          ),
+          const Divider(),
+          ListTile(
             leading: const Icon(Icons.account_balance_wallet_outlined),
             title: Text('wallet'.tr()),
             onTap: () => context.push('/wallet'),

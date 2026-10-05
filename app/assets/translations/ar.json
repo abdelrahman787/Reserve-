@@ -102,5 +102,8 @@
   "pick_image": "اختيار صورة",
   "image_uploaded": "تم رفع الصورة",
   "pay_from_wallet": "الدفع من المحفظة",
-  "paid_success": "تم دفع الطلب بنجاح"
+  "paid_success": "تم دفع الطلب بنجاح",
+  "account_settings": "إعدادات الحساب",
+  "save_changes": "حفظ التعديلات",
+  "saved": "تم الحفظ"
 }

@@ -102,5 +102,8 @@
   "pick_image": "Pick image",
   "image_uploaded": "Image uploaded",
   "pay_from_wallet": "Pay from wallet",
-  "paid_success": "Order paid successfully"
+  "paid_success": "Order paid successfully",
+  "account_settings": "Account settings",
+  "save_changes": "Save changes",
+  "saved": "Saved"
 }
