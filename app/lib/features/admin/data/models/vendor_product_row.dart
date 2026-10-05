@@ -8,6 +8,7 @@ class VendorProductRow {
     required this.stockQty,
     required this.isAvailable,
     this.genericName,
+    this.imageUrl,
   });
 
   final String id;
@@ -18,6 +19,7 @@ class VendorProductRow {
   final double discountPercent;
   final int stockQty;
   final bool isAvailable;
+  final String? imageUrl;
 
   factory VendorProductRow.fromMap(Map<String, dynamic> m) {
     final product = (m['products'] as Map<String, dynamic>?) ?? const {};
@@ -26,6 +28,7 @@ class VendorProductRow {
       productId: m['product_id'] as String,
       tradeName: product['trade_name'] as String? ?? '—',
       genericName: product['generic_name'] as String?,
+      imageUrl: product['image_url'] as String?,
       price: (m['price'] as num?)?.toDouble() ?? 0,
       discountPercent: (m['discount_percent'] as num?)?.toDouble() ?? 0,
       stockQty: (m['stock_qty'] as num?)?.toInt() ?? 0,

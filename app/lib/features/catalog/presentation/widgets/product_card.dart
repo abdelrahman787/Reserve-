@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -18,11 +19,7 @@ class ProductCard extends StatelessWidget {
       child: ListTile(
         onTap: onTap,
         contentPadding: const EdgeInsets.all(12),
-        leading: CircleAvatar(
-          radius: 26,
-          backgroundColor: theme.colorScheme.primaryContainer,
-          child: const Icon(Icons.medication),
-        ),
+        leading: _Leading(url: product.imageUrl, theme: theme),
         title: Text(product.tradeName,
             maxLines: 1, overflow: TextOverflow.ellipsis),
         subtitle: Column(
@@ -54,6 +51,38 @@ class ProductCard extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Leading extends StatelessWidget {
+  const _Leading({required this.url, required this.theme});
+  final String? url;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    const size = 52.0;
+    if (url == null || url!.isEmpty) {
+      return CircleAvatar(
+        radius: 26,
+        backgroundColor: theme.colorScheme.primaryContainer,
+        child: const Icon(Icons.medication),
+      );
+    }
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(26),
+      child: CachedNetworkImage(
+        imageUrl: url!,
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        errorWidget: (_, __, ___) => CircleAvatar(
+          radius: 26,
+          backgroundColor: theme.colorScheme.primaryContainer,
+          child: const Icon(Icons.medication),
         ),
       ),
     );

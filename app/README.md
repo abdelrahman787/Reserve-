@@ -18,6 +18,7 @@ stock). Flutter for Android, iOS, and Web from one codebase.
    - `../backend/supabase/migrations/0004_wallet_promos.sql`
    - `../backend/supabase/migrations/0005_device_tokens.sql`
    - `../backend/supabase/migrations/0006_pharmacies_policies.sql`
+   - `../backend/supabase/migrations/0007_storage.sql` (product-image bucket)
    - `../backend/supabase/seed/seed.sql` (optional sample data)
    - `../backend/supabase/seed/categories_import.sql` (optional: 63 real drug
      categories with images, imported from the owner's catalog)

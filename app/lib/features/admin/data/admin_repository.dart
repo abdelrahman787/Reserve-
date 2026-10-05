@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -14,7 +16,7 @@ class AdminRepository {
     try {
       final rows = await _client
           .from('vendor_products')
-          .select('*, products(trade_name, generic_name)')
+          .select('*, products(trade_name, generic_name, image_url)')
           .eq('vendor_id', vendorId)
           .order('created_at', ascending: false);
       final list = (rows as List)
@@ -52,7 +54,8 @@ class AdminRepository {
   }
 
   /// Creates a catalog product and the vendor's offer for it in one go.
-  Future<Either<Failure, Unit>> createProductWithOffer({
+  /// Returns the new product's id (useful for a follow-up image upload).
+  Future<Either<Failure, String>> createProductWithOffer({
     required String vendorId,
     required String tradeName,
     String? genericName,
@@ -77,7 +80,33 @@ class AdminRepository {
         'price': price,
         'stock_qty': stockQty,
       });
-      return const Right(unit);
+      return Right(product['id'] as String);
+    } on PostgrestException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (_) {
+      return const Left(UnknownFailure());
+    }
+  }
+
+  /// Uploads a product image to Storage and sets the product's `image_url`.
+  /// Returns the public URL.
+  Future<Either<Failure, String>> uploadProductImage(
+    String productId,
+    Uint8List bytes, {
+    String ext = 'jpg',
+  }) async {
+    try {
+      final path = 'products/$productId/${DateTime.now().millisecondsSinceEpoch}.$ext';
+      await _client.storage.from('product-images').uploadBinary(
+            path,
+            bytes,
+            fileOptions: const FileOptions(upsert: true),
+          );
+      final url = _client.storage.from('product-images').getPublicUrl(path);
+      await _client.from('products').update({'image_url': url}).eq('id', productId);
+      return Right(url);
+    } on StorageException catch (e) {
+      return Left(ServerFailure(e.message));
     } on PostgrestException catch (e) {
       return Left(ServerFailure(e.message));
     } catch (_) {

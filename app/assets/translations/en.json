@@ -97,5 +97,8 @@
   "offers_count": "{} offers from distributors",
   "requires_rx": "Rx",
   "forgot_password": "Forgot password?",
-  "reset_sent": "A password reset link has been sent to your email"
+  "reset_sent": "A password reset link has been sent to your email",
+  "upload_image": "Upload image",
+  "pick_image": "Pick image",
+  "image_uploaded": "Image uploaded"
 }
