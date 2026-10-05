@@ -1,0 +1,26 @@
+<svg width="560" height="160" viewBox="0 0 560 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgh" x1="16" y1="16" x2="144" y2="144" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2E73E6"/>
+      <stop offset="1" stop-color="#14459A"/>
+    </linearGradient>
+  </defs>
+  <!-- Badge -->
+  <g transform="translate(16,16)">
+    <rect width="128" height="128" rx="28" fill="url(#bgh)"/>
+    <path d="M53 45.5 L64 34.5 L75 45.5" stroke="#BFD6FB" stroke-width="5"
+          stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <rect x="36.5" y="49.5" width="55" height="47" rx="5" fill="#FFFFFF"/>
+    <line x1="36.5" y1="60" x2="91.5" y2="60" stroke="#D6E4FB" stroke-width="1.6" stroke-linecap="round"/>
+    <rect x="61.5" y="49.5" width="5" height="10.5" fill="#D6E4FB"/>
+    <rect x="59.75" y="67.5" width="8.5" height="23" rx="2.3" fill="#1E63D0"/>
+    <rect x="52.5" y="74.75" width="23" height="8.5" rx="2.3" fill="#1E63D0"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="172" y="102" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
+        font-size="68" font-weight="800" letter-spacing="-1">
+    <tspan fill="#14459A">Med</tspan><tspan fill="#1E63D0">Stock</tspan>
+  </text>
+  <text x="174" y="132" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
+        font-size="19" font-weight="500" letter-spacing="3" fill="#64748B">PHARMACY SUPPLY</text>
+</svg>

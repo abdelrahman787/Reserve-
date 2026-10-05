@@ -1,0 +1,98 @@
+# PharmaReserve — B2B Pharmacy Ordering Platform
+
+A B2B marketplace where **pharmacies** browse the catalog of **warehouses /
+distributors** and place stock orders. Inspired by, and informed by analysis
+of, the owner's existing PharmaLink app (a Flutter app of the same domain).
+
+## Product summary
+
+- **Who uses it:** pharmacy owners/staff (the buyers) and warehouse/vendor
+  staff + platform admins (the sellers/operators).
+- **Core flows (MVP):**
+  1. **Auth** — pharmacy registration + login; account approval by the
+     warehouse/admin.
+  2. **Catalog** — browse drugs by category, search by trade/generic name or
+     company, filter by price; product details (generic name, pharmacology,
+     producer, price, availability).
+  3. **Cart & Orders** — add to cart, apply promo, checkout, track order
+     status through delivery rounds.
+  4. **Admin dashboard** (Flutter Web) — manage products, pricing, stock, and
+     review/fulfil orders.
+
+## Tech stack
+
+| Layer | Choice |
+|-------|--------|
+| Client | Flutter (Android, iOS, Web — single codebase) |
+| Architecture | Clean Architecture (presentation / domain / data) |
+| State mgmt | BLoC / Cubit (`flutter_bloc`) |
+| Routing | `go_router` |
+| DI | `get_it` (+ `injectable` optional) |
+| Backend | **Supabase** — Postgres, Auth, Storage, Realtime, auto REST |
+| Data access | `supabase_flutter` (+ repositories wrapping it) |
+| Admin | Flutter Web build of the same app (admin shell) |
+
+This mirrors the architecture recovered from the reference app
+(BLoC + go_router + get_it + clean layering — see
+`docs/extracted/reference_app_dart_files.txt`) while replacing its proprietary
+.NET/SignalR backend with Supabase (Realtime replaces SignalR).
+
+## Layering (per feature)
+
+```
+features/<feature>/
+  data/          # models (DTOs), datasources (supabase), repositories impl
+  domain/        # entities, repository interfaces, usecases
+  presentation/  # cubits/blocs, pages, widgets
+```
+
+Shared infrastructure lives in `core/` (config, DI, router, theme, network,
+error handling, shared widgets) — same split as the reference app's `core/`.
+
+## Backend (Supabase)
+
+Schema lives in `backend/supabase/migrations/`. Highlights:
+
+- `pharmacies` (buyer accounts) and `vendors` (warehouses) as the two sides.
+- `products` is the shared drug catalog; `vendor_products` holds each vendor's
+  **price + stock** for a product (the B2B multi-distributor model — the
+  reference app surfaced this as "Offers from distributors").
+- `orders` are per-vendor; `order_items` snapshot name/price at purchase time.
+- `promos`, `wallets` + `wallet_transactions`, `favorites` (favorite
+  suppliers) round out the MVP.
+- **Row Level Security** scopes each pharmacy to its own cart/orders/wallet,
+  and each vendor to its own products/orders; platform admins see all.
+
+## Status / roadmap
+
+- [x] Repo + architecture + extracted reference data
+- [x] DB schema + RLS (`0001_init.sql`)
+- [x] Flutter app scaffold (core: config, DI, router, theme, Supabase)
+- [x] Auth feature (register pharmacy / login)
+- [x] Catalog feature (list, search, details)
+- [x] Cart + checkout (`checkout` RPC, `0002_checkout.sql`) + orders (list + details + status)
+- [x] Admin dashboard (web): manage products/price/stock + review orders + update status
+- [x] Wallet UI (balance + transactions; auto-created per pharmacy, `0004`)
+- [x] Promos management (admin: create / activate, `0004` vendor policy)
+- [x] Realtime order updates (pharmacy order list live-refreshes on changes)
+- [x] Brand identity (logo, palette, theme, app icon — see `BRAND.md`)
+- [x] Realtime on the admin side too (incoming-orders list live-refreshes)
+- [x] Push notifications (FCM): client integration + `device_tokens` (`0005`)
+      + `send-notification` Edge Function — see `NOTIFICATIONS.md`
+- [x] Unit tests (pricing / parsing) + CI (GitHub Actions: analyze + test)
+- [x] Seed data + run instructions (`app/README.md`)
+- [x] Validated: `flutter analyze` clean + `flutter test` passing + `flutter build web` succeeds
+- [ ] Next: wallet top-up / order-paid debits, payment gateway, order-status → push trigger
+
+Verified with Flutter 3.47 / Dart 3.13 in this environment:
+`flutter analyze` → *No issues found!*; `flutter build web` → *Built build/web*.
+
+## Notes on the reference app
+
+The reference APK is a **Flutter release build**; its Dart source is AOT-
+compiled to machine code and **cannot be decompiled back to source**. What we
+reuse is the recoverable material: the feature/architecture map, the full
+dependency list (`docs/extracted/reference_packages.txt`), API/endpoint shape,
+and the i18n strings (`docs/extracted/i18n_reference/`). No proprietary binary,
+branding, or copyrighted asset from the reference app is shipped in this new
+app.

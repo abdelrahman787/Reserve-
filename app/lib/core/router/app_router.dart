@@ -1,0 +1,50 @@
+import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/register_page.dart';
+import '../../features/account/presentation/pages/account_settings_page.dart';
+import '../../features/admin/presentation/pages/admin_shell.dart';
+import '../../features/catalog/presentation/pages/product_details_page.dart';
+import '../../features/orders/presentation/pages/order_details_page.dart';
+import '../../features/shell/home_shell.dart';
+import '../../features/wallet/presentation/pages/wallet_page.dart';
+import 'refresh_stream.dart';
+
+class AppRouter {
+  AppRouter(this._client);
+  final SupabaseClient _client;
+
+  late final GoRouter router = GoRouter(
+    initialLocation: '/login',
+    refreshListenable: GoRouterRefreshStream(_client.auth.onAuthStateChange),
+    redirect: (context, state) {
+      final loggedIn = _client.auth.currentSession != null;
+      final goingToAuth =
+          state.matchedLocation == '/login' || state.matchedLocation == '/register';
+
+      if (!loggedIn && !goingToAuth) return '/login';
+      if (loggedIn && goingToAuth) return '/home';
+      return null;
+    },
+    routes: [
+      GoRoute(path: '/login', builder: (_, __) => const LoginPage()),
+      GoRoute(path: '/register', builder: (_, __) => const RegisterPage()),
+      GoRoute(path: '/home', builder: (_, __) => const HomeShell()),
+      GoRoute(
+        path: '/product/:id',
+        builder: (_, state) =>
+            ProductDetailsPage(productId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/order/:id',
+        builder: (_, state) =>
+            OrderDetailsPage(orderId: state.pathParameters['id']!),
+      ),
+      GoRoute(path: '/admin', builder: (_, __) => const AdminShell()),
+      GoRoute(path: '/wallet', builder: (_, __) => const WalletPage()),
+      GoRoute(
+          path: '/account', builder: (_, __) => const AccountSettingsPage()),
+    ],
+  );
+}
