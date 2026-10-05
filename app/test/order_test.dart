@@ -17,6 +17,7 @@ void main() {
   test('PharmaOrder.fromMap parses vendor + items + totals', () {
     final o = PharmaOrder.fromMap(const {
       'id': 'o1',
+      'pharmacy_id': 'ph1',
       'status': 'processing',
       'subtotal': 200.0,
       'discount': 20.0,
@@ -34,6 +35,7 @@ void main() {
       ],
     });
     expect(o.id, 'o1');
+    expect(o.pharmacyId, 'ph1');
     expect(o.status, 'processing');
     expect(o.vendorName, 'Nile Pharma');
     expect(o.total, 180.0);
