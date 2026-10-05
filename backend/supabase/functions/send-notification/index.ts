@@ -18,7 +18,8 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 interface Payload {
-  user_id: string;
+  user_id?: string;      // target a single user, OR
+  pharmacy_id?: string;  // target every user of a pharmacy
   title: string;
   body: string;
   data?: Record<string, string>;
@@ -74,17 +75,33 @@ async function getAccessToken(serviceAccount: Record<string, unknown>): Promise<
 
 Deno.serve(async (req) => {
   try {
-    const { user_id, title, body, data } = (await req.json()) as Payload;
+    const { user_id, pharmacy_id, title, body, data } = (await req.json()) as Payload;
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
+    // Resolve the set of target user ids.
+    let userIds: string[] = [];
+    if (user_id) {
+      userIds = [user_id];
+    } else if (pharmacy_id) {
+      const { data: profiles, error: pErr } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("pharmacy_id", pharmacy_id);
+      if (pErr) throw pErr;
+      userIds = (profiles ?? []).map((p: { id: string }) => p.id);
+    }
+    if (userIds.length === 0) {
+      return new Response(JSON.stringify({ sent: 0 }), { status: 200 });
+    }
+
     const { data: tokens, error } = await supabase
       .from("device_tokens")
       .select("token")
-      .eq("user_id", user_id);
+      .in("user_id", userIds);
     if (error) throw error;
     if (!tokens?.length) {
       return new Response(JSON.stringify({ sent: 0 }), { status: 200 });

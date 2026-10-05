@@ -33,6 +33,7 @@ class PharmaOrder extends Equatable {
     required this.deliveryFee,
     required this.total,
     required this.createdAt,
+    this.pharmacyId,
     this.vendorName,
     this.promoCode,
     this.note,
@@ -41,6 +42,7 @@ class PharmaOrder extends Equatable {
   });
 
   final String id;
+  final String? pharmacyId;
   final String status;
   final double subtotal;
   final double discount;
@@ -58,6 +60,7 @@ class PharmaOrder extends Equatable {
     final rawItems = (m['order_items'] as List?) ?? const [];
     return PharmaOrder(
       id: m['id'] as String,
+      pharmacyId: m['pharmacy_id'] as String?,
       status: m['status'] as String? ?? 'pending',
       subtotal: (m['subtotal'] as num?)?.toDouble() ?? 0,
       discount: (m['discount'] as num?)?.toDouble() ?? 0,

@@ -84,8 +84,26 @@ class _AdminOrdersPageState extends State<AdminOrdersPage> {
       res.fold(
         (f) => ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(f.message))),
-        (_) => _refresh(),
+        (_) {
+          _notifyPharmacy(o.pharmacyId, picked);
+          _refresh();
+        },
       );
+    }
+  }
+
+  /// Best-effort push to the pharmacy that the order status changed. No-op if
+  /// the `send-notification` function is not deployed / Firebase not set up.
+  Future<void> _notifyPharmacy(String? pharmacyId, String status) async {
+    if (pharmacyId == null) return;
+    try {
+      await sl<SupabaseClient>().functions.invoke('send-notification', body: {
+        'pharmacy_id': pharmacyId,
+        'title': 'order'.tr(),
+        'body': 'order_status_$status'.tr(),
+      });
+    } catch (_) {
+      // Ignore: notifications are optional.
     }
   }
 
